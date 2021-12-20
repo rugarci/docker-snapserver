@@ -1,8 +1,7 @@
-# Define Alpine version (default '3.14.2')
-ARG ALPINE_BASE="3.14.3"
+ARG ALPINE_BASE="3.12.9"
 
 # SnapCast build stage
-FROM alpine:${ALPINE_BASE} as snapcast
+FROM alpine:${ALPINE_BASE} as snapcastbuild
 WORKDIR /root
 # Dummy file is needed, because there's no conditional copy
 COPY dummy qemu-*-static /usr/bin/
@@ -15,7 +14,7 @@ RUN apk -U add alsa-lib-dev avahi-dev bash build-base ccache cmake expat-dev fla
  && cmake --build build --parallel 3
 
 # SnapWeb build stage
-FROM node:alpine as snapweb
+FROM node:alpine as snapwebbuild
 WORKDIR /root
 
 RUN apk add build-base git \
@@ -27,19 +26,27 @@ RUN apk add build-base git \
 FROM alpine:${ALPINE_BASE}
 WORKDIR /root
 COPY dummy qemu-*-static /usr/bin/
-LABEL maintainer="Saiyato"
 
-RUN mkdir -p /var/www/html \
- && wget -O /etc/snapserver.conf https://raw.githubusercontent.com/Saiyato/snapserver_docker/master/snapserver/snapserver.conf
+ARG BUILD_DATE
+ARG VERSION
+ARG VCS_REF
+
+LABEL org.label-schema.build-date=$BUILD_DATE \
+    org.label-schema.name="docker-snapserver" \
+    org.label-schema.version=$VERSION \
+    org.label-schema.vcs-ref=$VCS_REF \
+    org.label-schema.vcs-url="https://github.com/rugarci/docker-snapserver" \
+    org.label-schema.vcs-type="Git" \
+    org.label-schema.schema-version="1.0"
+RUN mkdir -p /var/www/html
 
 RUN apk add alsa-lib avahi-libs expat flac libvorbis opus soxr \
  && rm -rf /etc/ssl /var/cache/apk/* /lib/apk/db/* /root/snapcast /usr/bin/dummy
 
-COPY --from=snapcast /root/snapcast/bin/snapserver /usr/local/bin
-COPY --from=snapweb /root/snapweb/dist/ /var/www/html/
+COPY --from=snapcastbuild /root/snapcast/bin/snapserver /usr/local/bin
+COPY --from=snapwebbuild /root/snapweb/dist/ /var/www/html/
 
-EXPOSE 1704
-EXPOSE 1705
-EXPOSE 1780
-
-ENTRYPOINT ["snapserver"]
+RUN /usr/bin/snapserver -v
+COPY snapserver.conf /etc/snapserver.conf
+EXPOSE 1704 1705 1780
+ENTRYPOINT ["/bin/bash","-c","/usr/bin/snapserver"]
