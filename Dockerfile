@@ -18,9 +18,10 @@ FROM node:alpine as snapwebbuild
 WORKDIR /root
 
 RUN apk add build-base git
-RUN npm install -g typescript@4.3
+RUN npm install -g typescript@latest 
+RUN npm install --save @types/wicg-mediasession@1.1.0
 RUN git clone https://github.com/badaix/snapweb
-RUN  make -C snapweb
+RUN make -C snapweb
 
 # Final stage
 FROM alpine:${ALPINE_BASE}
