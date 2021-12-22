@@ -44,10 +44,10 @@ RUN mkdir -p /var/www/html
 RUN apk add alsa-lib avahi-libs expat flac libvorbis opus soxr \
  && rm -rf /etc/ssl /var/cache/apk/* /lib/apk/db/* /root/snapcast /usr/bin/dummy
 
-COPY --from=snapcastbuild /root/snapcast/bin/snapserver /usr/local/bin
+COPY --from=snapcastbuild /root/snapcast/bin/snapserver /usr/bin
 COPY --from=snapwebbuild /root/snapweb/dist/ /var/www/html/
 
 RUN /usr/bin/snapserver -v
 COPY snapserver.conf /etc/snapserver.conf
 EXPOSE 1704 1705 1780
-ENTRYPOINT ["/bin/bash","-c","/usr/bin/snapserver"]
+ENTRYPOINT ["/usr/bin/snapserver","-c","/etc/snapserver.conf"]
