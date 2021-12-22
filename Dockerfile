@@ -17,10 +17,10 @@ RUN apk -U add alsa-lib-dev avahi-dev bash build-base ccache cmake expat-dev fla
 FROM node:alpine as snapwebbuild
 WORKDIR /root
 
-RUN apk add build-base git \
- && npm install -g typescript@4.3 \
- && git clone https://github.com/badaix/snapweb \
- && make -C snapweb
+RUN apk add build-base git
+RUN npm install -g typescript@4.3
+RUN git clone https://github.com/badaix/snapweb
+RUN  make -C snapweb
 
 # Final stage
 FROM alpine:${ALPINE_BASE}
