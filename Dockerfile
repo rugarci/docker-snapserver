@@ -5,6 +5,9 @@ ARG SNAPWEB_VERSION=v0.2.0
 
 # SnapCast build stage
 FROM alpine:$ALPINE_BASE as snapcastbuild
+
+ARG SNAPCAST_VERSION
+
 WORKDIR /root
 # Dummy file is needed, because there's no conditional copy
 COPY dummy qemu-*-static /usr/bin/
@@ -18,6 +21,9 @@ RUN cmake --build build --parallel 3
 
 # SnapWeb build stage
 FROM node:alpine as snapwebbuild
+
+ARG SNAPWEB_VERSION
+
 WORKDIR /root
 
 RUN apk add build-base git
@@ -31,6 +37,8 @@ FROM alpine:$ALPINE_BASE
 WORKDIR /root
 # COPY dummy qemu-*-static /usr/bin/
 
+ARG SNAPCAST_VERSION
+ARG SNAPWEB_VERSION
 ARG BUILD_DATE
 ARG VERSION
 ARG VCS_REF
