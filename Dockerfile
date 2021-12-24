@@ -12,12 +12,12 @@ WORKDIR /root
 # Dummy file is needed, because there's no conditional copy
 COPY dummy qemu-*-static /usr/bin/
 
-RUN apk -U add alsa-lib-dev avahi-dev bash build-base ccache cmake expat-dev flac-dev git libvorbis-dev opus-dev soxr-dev
-RUN git clone --recursive https://github.com/badaix/snapcast --branch $SNAPCAST_VERSION
-RUN cd snapcast
-RUN wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2 && tar -xjf boost_1_76_0.tar.bz2
-RUN cmake -S . -B build -DBOOST_ROOT=boost_1_76_0 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DBUILD_WITH_PULSE=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_CLIENT=OFF ..
-RUN cmake --build build --parallel 3
+RUN apk -U add alsa-lib-dev avahi-dev bash build-base ccache cmake expat-dev flac-dev git libvorbis-dev opus-dev soxr-dev \
+ && git clone --recursive https://github.com/badaix/snapcast --branch $SNAPCAST_VERSION \
+ && cd snapcast \
+ && wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2 && tar -xjf boost_1_76_0.tar.bz2 \
+ && cmake -S . -B build -DBOOST_ROOT=boost_1_76_0 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DBUILD_WITH_PULSE=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_CLIENT=OFF .. \
+ && cmake --build build --parallel 3
 
 # SnapWeb build stage
 FROM node:alpine as snapwebbuild
