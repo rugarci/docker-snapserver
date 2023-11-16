@@ -20,7 +20,7 @@ RUN apk -U add alsa-lib-dev avahi-dev bash build-base ccache cmake expat-dev fla
  && cmake --build build --parallel 3
 
 # SnapWeb build stage
-FROM node:18-alpine3.18 as snapwebbuild
+FROM node:alpine as snapwebbuild
 
 ARG SNAPWEB_VERSION
 
@@ -29,7 +29,7 @@ WORKDIR /root
 RUN apk add build-base git
 RUN npm install -g typescript@latest 
 RUN npm install --save @types/wicg-mediasession@1.1.0
-RUN git clone https://github.com/badaix/snapweb --branch $SNAPWEB_VERSION
+RUN git clone https://github.com/yubiuser/snapweb --branch $SNAPWEB_VERSION
 RUN make -C snapweb
 
 # Final stage
