@@ -20,7 +20,7 @@ RUN apk -U add alsa-lib-dev avahi-dev bash build-base ccache cmake expat-dev fla
  && cmake --build build --parallel 3
 
 # SnapWeb build stage
-FROM node:alpine as snapwebbuild
+FROM node:18-alpine3.18 as snapwebbuild
 
 ARG SNAPWEB_VERSION
 
