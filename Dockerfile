@@ -1,7 +1,7 @@
 ARG ALPINE_BASE=3.18.3
 
 ARG SNAPCAST_VERSION=v0.27.0
-ARG SNAPWEB_VERSION=master
+ARG SNAPWEB_VERSION=react
 
 # SnapCast build stage
 FROM alpine:$ALPINE_BASE as snapcastbuild
@@ -20,17 +20,22 @@ RUN apk -U add alsa-lib-dev avahi-dev bash build-base ccache cmake expat-dev fla
  && cmake --build build --parallel 3
 
 # SnapWeb build stage
-FROM node:21-alpine as snapwebbuild
+FROM node:alpine as snapwebbuild
 
 ARG SNAPWEB_VERSION
 
 WORKDIR /root
 
-RUN apk add build-base git
-RUN npm install --verbose -g typescript@latest 
-RUN npm install --save @types/wicg-mediasession@1.1.0
-RUN git clone https://github.com/yubiuser/snapweb --branch $SNAPWEB_VERSION
-RUN make -C snapweb
+#RUN apk add build-base git
+#RUN npm install --verbose -g typescript@latest 
+#RUN npm install --save @types/wicg-mediasession@1.1.0
+
+RUN npm install -g npm@latest
+RUN git clone https://github.com/badaix/snapweb --branch $SNAPWEB_VERSION
+#RUN make -C snapweb
+RUN npm ci
+
+WORKDIR /root/snapweb   
 
 # Final stage
 FROM alpine:$ALPINE_BASE
