@@ -27,7 +27,7 @@ ARG SNAPWEB_VERSION
 WORKDIR /root
 
 RUN apk add build-base git
-RUN npm install -g typescript@latest 
+RUN npm install --verbose -g typescript@latest 
 RUN npm install --save @types/wicg-mediasession@1.1.0
 RUN git clone https://github.com/yubiuser/snapweb --branch $SNAPWEB_VERSION
 RUN make -C snapweb
