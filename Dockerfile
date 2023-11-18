@@ -27,7 +27,7 @@ ARG SNAPWEB_VERSION
 WORKDIR /root
 
 RUN apt-get update
-RUN apt-get -y install nodejs
+RUN apt-get -y install nodejs npm
 
 #RUN apk add build-base git
 #RUN npm install --verbose -g typescript@latest 
