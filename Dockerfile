@@ -26,7 +26,7 @@ ARG SNAPWEB_VERSION
 
 WORKDIR /root
 
-RUN apt-get update && apt-get install curl 
+RUN apt-get update && apt-get -y install curl 
 
 RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 
