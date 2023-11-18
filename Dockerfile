@@ -26,6 +26,9 @@ ARG SNAPWEB_VERSION
 
 WORKDIR /root
 
+RUN apt-get update
+RUN apt-get -y install nodejs
+
 #RUN apk add build-base git
 #RUN npm install --verbose -g typescript@latest 
 #RUN npm install --save @types/wicg-mediasession@1.1.0
