@@ -1,4 +1,4 @@
-ARG ALPINE_BASE=3.18.3
+ARG ALPINE_BASE=3.19
 
 ARG SNAPCAST_VERSION=v0.27.0
 ARG SNAPWEB_VERSION=react
@@ -20,21 +20,20 @@ RUN apk -U add alsa-lib-dev avahi-dev bash build-base ccache cmake expat-dev fla
  && cmake --build build --parallel 3
 
 # SnapWeb build stage
-FROM ubuntu:latest as snapwebbuild
+FROM alpine:$ALPINE_BASE as snapwebbuild
+#FROM ubuntu:latest as snapwebbuild
 
 ARG SNAPWEB_VERSION
 
 WORKDIR /root
 
-RUN apt-get update && apt-get -y install curl 
+#RUN apt-get update && apt-get -y install curl 
+#RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
+#RUN apt-get -y install nodejs git
 
-RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
-
-RUN apt-get -y install nodejs git
-
-#RUN apk add build-base git
-#RUN npm install --verbose -g typescript@latest 
-#RUN npm install --save @types/wicg-mediasession@1.1.0
+RUN apk add build-base git
+RUN npm install --verbose -g typescript@latest 
+RUN npm install --save @types/wicg-mediasession@1.1.0
 
 RUN npm install -g npm@latest
 RUN git clone https://github.com/badaix/snapweb --branch $SNAPWEB_VERSION
