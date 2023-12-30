@@ -12,12 +12,14 @@ WORKDIR /root
 # Dummy file is needed, because there's no conditional copy
 COPY dummy qemu-*-static /usr/bin/
 
-RUN apk -U add alsa-lib-dev avahi-dev bash build-base ccache cmake expat-dev flac-dev git libvorbis-dev opus-dev soxr-dev \
- && git clone --recursive https://github.com/badaix/snapcast --branch $SNAPCAST_VERSION \
+RUN apk -U add alsa-lib-dev avahi-dev bash build-base ccache cmake expat-dev flac-dev git libvorbis-dev opus-dev soxr-dev alsa-utils  libpulse
+
+
+RUN git clone --recursive https://github.com/badaix/snapcast --branch $SNAPCAST_VERSION \
  && cd snapcast \
- && wget https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2 && tar -xjf boost_1_76_0.tar.bz2 \
- && cmake -S . -B build -DBOOST_ROOT=boost_1_76_0 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DBUILD_WITH_PULSE=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_CLIENT=OFF .. \
- && cmake --build build --parallel 3
+ && wget https://boostorg.jfrog.io/artifactory/main/release/1.83.0/source/boost_1_83_0.tar.bz2 && tar -xjf boost_1_83_0.tar.bz2 \
+ && cmake -S . -B build -DWERROR=ON -DBUILD_TESTS=ON -DBOOST_ROOT=boost_1_83_0 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-DCMAKE_CXX_FLAGS=-DJSON_HAS_CPP_14" .. \
+ && cmake --build build --parallel 3 --verbose
 
 # SnapWeb build stage
 FROM alpine:$ALPINE_BASE as snapwebbuild
