@@ -31,7 +31,7 @@ WORKDIR /root
 #RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 #RUN apt-get -y install nodejs git
 
-RUN apk add build-base git
+RUN apk add build-base git npm
 RUN npm install --verbose -g typescript@latest 
 RUN npm install --save @types/wicg-mediasession@1.1.0
 
