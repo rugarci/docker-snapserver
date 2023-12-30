@@ -33,11 +33,12 @@ WORKDIR /root
 
 RUN apk add build-base git npm
 RUN npm install --verbose -g typescript@latest 
-RUN npm install --save @types/wicg-mediasession@1.1.0
+#RUN npm install --save @types/wicg-mediasession@1.1.0
 
 RUN npm install -g npm@latest
 RUN git clone https://github.com/badaix/snapweb --branch $SNAPWEB_VERSION
 #RUN make -C snapweb
+RUN cd snapweb
 RUN npm ci
 
 WORKDIR /root/snapweb   
