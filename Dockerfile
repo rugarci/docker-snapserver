@@ -1,25 +1,23 @@
 ARG ALPINE_BASE=3.19
 
-ARG SNAPCAST_VERSION=v0.27.0
+ARG SNAPCAST_VERSION=0.27.0-r3
 ARG SNAPWEB_VERSION=react
 
 # SnapCast build stage
-FROM alpine:$ALPINE_BASE as snapcastbuild
+#FROM alpine:$ALPINE_BASE as snapcastbuild
+#ARG SNAPCAST_VERSION
 
-ARG SNAPCAST_VERSION
-
-WORKDIR /root
+#WORKDIR /root
 # Dummy file is needed, because there's no conditional copy
-COPY dummy qemu-*-static /usr/bin/
+#COPY dummy qemu-*-static /usr/bin/
 
-RUN apk -U add alsa-lib-dev avahi-dev bash build-base ccache cmake expat-dev flac-dev git libvorbis-dev opus-dev soxr-dev alsa-utils  libpulse
+#RUN apk -U add alsa-lib-dev avahi-dev bash build-base ccache cmake expat-dev flac-dev git libvorbis-dev opus-dev soxr-dev alsa-utils  libpulse
 
-
-RUN git clone --recursive https://github.com/badaix/snapcast --branch $SNAPCAST_VERSION \
- && cd snapcast \
- && wget https://boostorg.jfrog.io/artifactory/main/release/1.83.0/source/boost_1_83_0.tar.bz2 && tar -xjf boost_1_83_0.tar.bz2 \
- && cmake -S . -B build -DWERROR=ON -DBUILD_TESTS=ON -DBOOST_ROOT=boost_1_83_0 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-DCMAKE_CXX_FLAGS=-DJSON_HAS_CPP_14" .. \
- && cmake --build build --parallel 3 --verbose
+#RUN git clone --recursive https://github.com/badaix/snapcast --branch $SNAPCAST_VERSION \
+# && cd snapcast \
+# && wget https://boostorg.jfrog.io/artifactory/main/release/1.83.0/source/boost_1_83_0.tar.bz2 && tar -xjf boost_1_83_0.tar.bz2 \
+# && cmake -S . -B build -DWERROR=ON -DBUILD_TESTS=ON -DBOOST_ROOT=boost_1_83_0 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="-DCMAKE_CXX_FLAGS=-DJSON_HAS_CPP_14" .. \
+# && cmake --build build --parallel 3 --verbose
 
 # SnapWeb build stage
 FROM alpine:$ALPINE_BASE as snapwebbuild
@@ -47,7 +45,6 @@ WORKDIR /root/snapweb
 # Final stage
 FROM alpine:$ALPINE_BASE
 WORKDIR /root
-# COPY dummy qemu-*-static /usr/bin/
 
 ARG SNAPCAST_VERSION
 ARG SNAPWEB_VERSION
@@ -69,10 +66,10 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     
 RUN mkdir -p /var/www/html
 
-RUN apk --no-cache add alsa-lib avahi-libs expat flac libvorbis opus soxr
+RUN apk --no-cache add alsa-lib avahi-libs expat flac libvorbis opus soxr snapcast=${SNAPCAST_VERSION}
 # RUN rm -rf /etc/ssl /var/cache/apk/* /lib/apk/db/* /root/snapcast /usr/bin/dummy
 
-COPY --from=snapcastbuild /root/snapcast/bin/snapserver /usr/bin
+#COPY --from=snapcastbuild /root/snapcast/bin/snapserver /usr/bin
 COPY --from=snapwebbuild /root/snapweb/dist/ /var/www/html/
 
 RUN /usr/bin/snapserver -v
