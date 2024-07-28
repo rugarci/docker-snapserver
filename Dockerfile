@@ -38,13 +38,10 @@ RUN apt-get update && apt-get -yq install debhelper fakeroot git
 #RUN npm install -g npm@latest
 RUN git clone https://github.com/badaix/snapweb --branch $SNAPWEB_VERSION
 #RUN make -C snapweb
-RUN cd snapweb
-RUN ls -la
-RUN cd snapweb
-RUN ls -la
-RUN npm ci
 
 WORKDIR /root/snapweb   
+RUN npm ci
+
 
 # Final stage
 FROM alpine:$ALPINE_BASE
