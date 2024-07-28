@@ -27,7 +27,7 @@ ARG SNAPWEB_VERSION
 
 WORKDIR /root
 
-RUN apt-get update && apt-get -yq install debhelper fakeroot nodejs git
+RUN apt-get update && apt-get -yq install debhelper fakeroot npm git
 #RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 
 #RUN apk add build-base git npm
