@@ -27,7 +27,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       -
         name: Build and push 1
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           cache-from: type=gha
@@ -39,7 +39,7 @@ jobs:
           target: snapwebbuild
       -
         name: Build and push 2
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           cache-from: type=gha
