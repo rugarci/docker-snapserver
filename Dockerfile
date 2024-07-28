@@ -22,7 +22,7 @@ ARG SNAPWEB_VERSION=v0.7.0
 # SnapWeb build stage
 #FROM alpine:$ALPINE_BASE as snapwebbuild
 #FROM ubuntu:latest as snapwebbuild
-FROM node:22 as snapwebbuild
+FROM node:22 AS snapwebbuild
 
 ARG SNAPWEB_VERSION
 
@@ -41,6 +41,8 @@ RUN git clone https://github.com/badaix/snapweb --branch $SNAPWEB_VERSION
 
 WORKDIR /root/snapweb   
 RUN npm ci
+
+RUN ls -la
 
 
 # Final stage
