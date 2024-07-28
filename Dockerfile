@@ -42,6 +42,8 @@ RUN git clone https://github.com/badaix/snapweb --branch $SNAPWEB_VERSION
 WORKDIR /root/snapweb   
 RUN npm ci
 
+COPY . .
+
 RUN ls -la
 
 
