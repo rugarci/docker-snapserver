@@ -32,7 +32,7 @@ RUN apt-get update && apt-get -yq install debhelper fakeroot
 #RUN apt-get -y install nodejs git
 
 #RUN apk add build-base git npm
-RUN npm install --verbose -g typescript@latest 
+#RUN npm install --verbose -g typescript@latest 
 #RUN npm install --save @types/wicg-mediasession@1.1.0
 
 RUN npm install -g npm@latest
