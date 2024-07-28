@@ -21,20 +21,21 @@ ARG SNAPWEB_VERSION=v0.7.0
 
 # SnapWeb build stage
 #FROM alpine:$ALPINE_BASE as snapwebbuild
-FROM ubuntu:latest as snapwebbuild
+#FROM ubuntu:latest as snapwebbuild
+FROM node:22 as snapwebbuild
 
 ARG SNAPWEB_VERSION
 
 WORKDIR /root
 
-RUN apt-get update && apt-get -yq install debhelper fakeroot npm git
+RUN apt-get update && apt-get -yq install debhelper fakeroot git
 #RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 
 #RUN apk add build-base git npm
 #RUN npm install --verbose -g typescript@latest 
 #RUN npm install --save @types/wicg-mediasession@1.1.0
 
-RUN npm install -g npm@latest
+#RUN npm install -g npm@latest
 RUN git clone https://github.com/badaix/snapweb --branch $SNAPWEB_VERSION
 #RUN make -C snapweb
 RUN cd snapweb
