@@ -1,6 +1,7 @@
 ARG ALPINE_BASE=3.20
 
-ARG SNAPCAST_VERSION=0.28.0
+#https://pkgs.alpinelinux.org/package/edge/community/armv7/snapcast
+ARG SNAPCAST_VERSION=0.28.0-r2
 ARG SNAPWEB_VERSION=v0.7.0
 
 # SnapCast build stage
@@ -20,30 +21,17 @@ ARG SNAPWEB_VERSION=v0.7.0
 # && cmake --build build --parallel 3 --verbose
 
 # SnapWeb build stage
-#FROM alpine:$ALPINE_BASE as snapwebbuild
-#FROM ubuntu:latest as snapwebbuild
 FROM node:22 AS snapwebbuild
 
 ARG SNAPWEB_VERSION
 
 WORKDIR /root
 
-RUN apt-get update && apt-get -yq install debhelper fakeroot git
-#RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
-
-#RUN apk add build-base git npm
-#RUN npm install --verbose -g typescript@latest 
-#RUN npm install --save @types/wicg-mediasession@1.1.0
-
-#RUN npm install -g npm@latest
+#RUN apt-get update && apt-get -yq install debhelper fakeroot git
+RUN apt-get update && apt-get -yq install git
 RUN git clone https://github.com/badaix/snapweb --branch $SNAPWEB_VERSION
-#RUN make -C snapweb
-
 WORKDIR /root/snapweb   
 RUN npm install && npm run build
-
-RUN ls -la
-
 
 # Final stage
 FROM alpine:$ALPINE_BASE
