@@ -40,9 +40,7 @@ RUN git clone https://github.com/badaix/snapweb --branch $SNAPWEB_VERSION
 #RUN make -C snapweb
 
 WORKDIR /root/snapweb   
-RUN npm ci
-
-COPY . .
+RUN npm install && npm run build
 
 RUN ls -la
 
