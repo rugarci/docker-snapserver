@@ -1,9 +1,15 @@
 name: Docker image build
 
 on:
+  workflow_dispatch:
   push:
-#   schedule:
-#     - cron:  '0 0 * * *'
+    branches:
+      - 'master'
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - 'master'
 
 jobs:
   build_image:
@@ -13,6 +19,12 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v3
+      -
+        name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: name/app
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -35,7 +47,7 @@ jobs:
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           #platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
           push: false
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-snapserver:test
+          #tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-snapserver:test
           target: snapwebbuild
       -
         name: Build and push 2
@@ -46,5 +58,8 @@ jobs:
           cache-to: type=gha,mode=max
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           #platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
-          push: false
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-snapserver:test
+          #push: false
+          #tags: ${{ secrets.DOCKERHUB_USERNAME }}/docker-snapserver:test
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
