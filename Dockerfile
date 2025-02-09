@@ -1,7 +1,7 @@
 ARG ALPINE_BASE=3.21.2
 
 #https://pkgs.alpinelinux.org/package/edge/community/armv7/snapcast
-ARG SNAPCAST_VERSION=0.29.0
+ARG SNAPCAST_VERSION=0.31.0
 ARG SNAPWEB_VERSION=v0.8.0
 
 # SnapCast build stage
