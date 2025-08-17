@@ -2,7 +2,7 @@ ARG ALPINE_BASE=3.22.1
 
 #https://pkgs.alpinelinux.org/package/edge/community/armv7/snapcast
 ARG SNAPCAST_VERSION=0.31.0
-#ARG SNAPWEB_VERSION=v0.8.0
+ARG SNAPWEB_VERSION=v0.9.1
 
 # SnapCast build stage
 #FROM alpine:$ALPINE_BASE as snapcastbuild
@@ -38,7 +38,7 @@ FROM alpine:$ALPINE_BASE
 WORKDIR /root
 
 ARG SNAPCAST_VERSION
-#ARG SNAPWEB_VERSION
+ARG SNAPWEB_VERSION
 ARG BUILD_DATE
 ARG VERSION
 ARG VCS_REF
@@ -59,6 +59,7 @@ RUN mkdir -p /var/www/html
 
 RUN apk --no-cache add alsa-lib avahi-libs expat flac libvorbis opus soxr snapcast~=${SNAPCAST_VERSION}
 # RUN rm -rf /etc/ssl /var/cache/apk/* /lib/apk/db/* /root/snapcast /usr/bin/dummy
+RUN apk --no-cache  add snapweb~=${SNAPWEB_VERSION} --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/
 
 #COPY --from=snapcastbuild /root/snapcast/bin/snapserver /usr/bin
 #COPY --from=snapwebbuild /root/snapweb/dist/ /var/www/html/
