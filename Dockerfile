@@ -51,7 +51,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.vcs-type="Git" \
     org.label-schema.schema-version="1.0" \
     org.opencord.component.snapcast.version=$SNAPCAST_VERSION \
-    org.opencord.component.snapcast.vcs-url="https://github.com/badaix/snapcast" \
+    org.opencord.component.snapcast.vcs-url="https://github.com/badaix/snapcast"
     #org.opencord.component.snapweb.version=$SNAPWEB_VERSION \
     #org.opencord.component.snapweb.vcs-url="https://github.com/badaix/snapweb"
     
