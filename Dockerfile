@@ -59,7 +59,7 @@ RUN mkdir -p /var/www/html
 
 RUN apk --no-cache add alsa-lib avahi-libs expat flac libvorbis opus soxr snapcast~=${SNAPCAST_VERSION}
 # RUN rm -rf /etc/ssl /var/cache/apk/* /lib/apk/db/* /root/snapcast /usr/bin/dummy
-RUN apk --no-cache add snapweb~=${SNAPWEB_VERSION} --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing
+RUN apk --no-cache add snapweb --repository=https://dl-cdn.alpinelinux.org/alpine/edge/testing
 
 #COPY --from=snapcastbuild /root/snapcast/bin/snapserver /usr/bin
 #COPY --from=snapwebbuild /root/snapweb/dist/ /var/www/html/
