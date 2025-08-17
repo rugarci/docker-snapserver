@@ -1,4 +1,4 @@
-ARG ALPINE_BASE=3.21.3
+ARG ALPINE_BASE=3.22.1
 
 #https://pkgs.alpinelinux.org/package/edge/community/armv7/snapcast
 ARG SNAPCAST_VERSION=0.31.0
