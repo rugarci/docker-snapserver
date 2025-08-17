@@ -1,7 +1,7 @@
 ARG ALPINE_BASE=3.22.1
 
 #https://pkgs.alpinelinux.org/package/edge/community/armv7/snapcast
-ARG SNAPCAST_VERSION=0.31.0
+ARG SNAPCAST_VERSION=0.32.3
 ARG SNAPWEB_VERSION=v0.8.0
 
 # SnapCast build stage
@@ -21,17 +21,17 @@ ARG SNAPWEB_VERSION=v0.8.0
 # && cmake --build build --parallel 3 --verbose
 
 # SnapWeb build stage
-FROM node:22 AS snapwebbuild
-
-ARG SNAPWEB_VERSION
-
-WORKDIR /root
-
-#RUN apt-get update && apt-get -yq install debhelper fakeroot git
-RUN apt-get update && apt-get -yq install git
-RUN git clone https://github.com/badaix/snapweb --branch $SNAPWEB_VERSION
-WORKDIR /root/snapweb   
-RUN npm install && npm run build
+#FROM node:22 AS snapwebbuild
+#
+#ARG SNAPWEB_VERSION
+#
+#WORKDIR /root
+#
+##RUN apt-get update && apt-get -yq install debhelper fakeroot git
+#RUN apt-get update && apt-get -yq install git
+#RUN git clone https://github.com/badaix/snapweb --branch $SNAPWEB_VERSION
+#WORKDIR /root/snapweb   
+#RUN npm install && npm run build
 
 # Final stage
 FROM alpine:$ALPINE_BASE
@@ -61,7 +61,7 @@ RUN apk --no-cache add alsa-lib avahi-libs expat flac libvorbis opus soxr snapca
 # RUN rm -rf /etc/ssl /var/cache/apk/* /lib/apk/db/* /root/snapcast /usr/bin/dummy
 
 #COPY --from=snapcastbuild /root/snapcast/bin/snapserver /usr/bin
-COPY --from=snapwebbuild /root/snapweb/dist/ /var/www/html/
+#COPY --from=snapwebbuild /root/snapweb/dist/ /var/www/html/
 
 RUN /usr/bin/snapserver -v
 COPY snapserver.conf /etc/snapserver.conf
