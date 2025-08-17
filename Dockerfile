@@ -1,8 +1,8 @@
 ARG ALPINE_BASE=3.22.1
 
 #https://pkgs.alpinelinux.org/package/edge/community/armv7/snapcast
-ARG SNAPCAST_VERSION=0.32.0
-ARG SNAPWEB_VERSION=v0.8.0
+ARG SNAPCAST_VERSION=0.31.0
+#ARG SNAPWEB_VERSION=v0.8.0
 
 # SnapCast build stage
 #FROM alpine:$ALPINE_BASE as snapcastbuild
@@ -38,7 +38,7 @@ FROM alpine:$ALPINE_BASE
 WORKDIR /root
 
 ARG SNAPCAST_VERSION
-ARG SNAPWEB_VERSION
+#ARG SNAPWEB_VERSION
 ARG BUILD_DATE
 ARG VERSION
 ARG VCS_REF
@@ -52,8 +52,8 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
     org.label-schema.schema-version="1.0" \
     org.opencord.component.snapcast.version=$SNAPCAST_VERSION \
     org.opencord.component.snapcast.vcs-url="https://github.com/badaix/snapcast" \
-    org.opencord.component.snapweb.version=$SNAPWEB_VERSION \
-    org.opencord.component.snapweb.vcs-url="https://github.com/badaix/snapweb"
+    #org.opencord.component.snapweb.version=$SNAPWEB_VERSION \
+    #org.opencord.component.snapweb.vcs-url="https://github.com/badaix/snapweb"
     
 RUN mkdir -p /var/www/html
 
