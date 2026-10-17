@@ -54,7 +54,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           #platforms: linux/amd64,linux/arm64
-          platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
+          #platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
           #push: false
           #tags: ${{ secrets.DOCKERHUB_USERNAME }}/snapserver:test
           push: ${{ github.event_name != 'pull_request' }}
